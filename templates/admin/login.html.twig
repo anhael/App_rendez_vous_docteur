@@ -1,0 +1,64 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Connexion Admin | Voyage Maison{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center align-items-center" style="min-height: calc(100vh - 110px);">
+        <div class="col-12 col-xl-11">
+            <div class="row g-0 overflow-hidden shadow-lg rounded-5 bg-white border border-1">
+                <div class="col-lg-5 p-4 p-lg-5 text-white" style="background: linear-gradient(150deg, rgba(15,23,42,.96), rgba(255,90,95,.88));">
+                    <span class="badge text-bg-light text-dark mb-4">Admin sécurisé</span>
+                    <h1 class="display-6 mb-3">Connexion au back-office Voyage Maison</h1>
+                    <p class="opacity-75 mb-4" style="max-width: 34ch;">Un accès simple, net et cohérent avec une application professionnelle de réservation.</p>
+
+                    <div class="d-grid gap-2 mb-4">
+                        <div class="glass-chip">Gestion des logements</div>
+                        <div class="glass-chip">Suivi des réservations</div>
+                        <div class="glass-chip">Pilotage des comptes</div>
+                    </div>
+
+                    <div class="small opacity-75">Compte admin démo</div>
+                    <div class="fw-semibold">admin@voyagemaison.local</div>
+                    <div class="fw-semibold">Admin123!</div>
+                </div>
+
+                <div class="col-lg-7 p-4 p-lg-5">
+                    <div class="mb-4">
+                        <div class="small text-uppercase text-muted fw-semibold">Bienvenue</div>
+                        <h2 class="section-title h3 mb-2">Se connecter à l’administration</h2>
+                        <p class="muted-small mb-0">Accès réservé au rôle administrateur.</p>
+                    </div>
+
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <form method="post" class="row g-3">
+                        <div class="col-12">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control form-control-lg" autocomplete="email" required autofocus>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" name="_password" id="password" class="form-control form-control-lg" autocomplete="current-password" required>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="col-12 d-grid">
+                            <button class="btn btn-dark btn-lg" type="submit">Accéder au dashboard</button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <a href="/" class="btn btn-outline-secondary">Retour au site</a>
+                        <span class="muted-small">Design optimisé pour un portfolio.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+            <span class="badge admin-badge mb-2">Tableau de bord</span>
+            <h1 class="section-title h2 mb-2">Pilote ton activité voyage</h1>
+            <p class="muted-small mb-0">Vue synthétique des logements, réservations et utilisateurs du projet.</p>
+            <p class="muted-small mb-0">Connecté: {{ app.user ? app.user.userIdentifier : 'inconnu' }}</p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/" class="btn btn-outline-secondary">Retour au site</a>
+            <a href="{{ path('app_admin_logout') }}" class="btn btn-dark">Déconnexion</a>
+        </div>
+    </div>
+
+    <div class="hero-panel mb-4">
+        <div>
+            <span class="badge text-bg-light text-dark mb-3">Portfolio ready</span>
+            <h2 class="display-6 mb-2">Vision d'ensemble du produit</h2>
+            <p class="mb-0" style="max-width: 56ch; opacity: .92;">Un dashboard plus crédible, plus lisible et plus cohérent avec un produit SaaS de réservation. Tu peux montrer ce B.O dans ton portfolio comme une vraie interface d'administration.</p>
+        </div>
+        <div class="hero-meta">
+            <span class="glass-chip">Admin protégé</span>
+            <span class="glass-chip">Gestion logement</span>
+            <span class="glass-chip">Réservations</span>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="kpi-card">
+                <div class="kpi-label">Logements</div>
+                <div class="kpi-value">{{ stats.properties }}</div>
+                <div class="kpi-note">Inventaire publié sur l’API.</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="kpi-card">
+                <div class="kpi-label">Réservations</div>
+                <div class="kpi-value">{{ stats.bookings }}</div>
+                <div class="kpi-note">Demandes et séjours enregistrés.</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="kpi-card">
+                <div class="kpi-label">Utilisateurs</div>
+                <div class="kpi-value">{{ stats.users }}</div>
+                <div class="kpi-note">Clients + comptes admin.</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="kpi-card">
+                <div class="kpi-label">Dernières entrées</div>
+                <div class="kpi-value">{{ bookings|length }}</div>
+                <div class="kpi-note">Réservations visibles ci-dessous.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="card section-card h-100">
+                <div class="card-header py-3 px-3 px-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h2 class="section-title h5 mb-1">Logements</h2>
+                        <p class="muted-small mb-0">Catalogue administrable du parc voyage.</p>
+                    </div>
+                    <span class="badge text-bg-light text-dark">{{ properties|length }} entrées</span>
+                </div>
+                <div class="card-body px-0 pt-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">ID</th>
+                                    <th>Titre</th>
+                                    <th>Description</th>
+                                    <th>Prix/nuit</th>
+                                    <th class="text-end pe-4">Créé le</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for property in properties %}
+                                    <tr>
+                                        <td class="ps-4 fw-semibold">#{{ property.id }}</td>
+                                        <td><div class="fw-semibold">{{ property.title }}</div></td>
+                                        <td style="max-width: 420px;" class="text-muted">{{ property.description }}</td>
+                                        <td class="fw-semibold">{{ property.price|number_format(0, ',', ' ') }} €</td>
+                                        <td class="text-end pe-4 text-muted">{{ property.createdAt ? property.createdAt|date('d/m/Y') : '-' }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">Aucun logement enregistré.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card section-card h-100">
+                <div class="card-header py-3 px-3 px-lg-4">
+                    <h2 class="section-title h5 mb-1">Activité récente</h2>
+                    <p class="muted-small mb-0">Dernières réservations du projet.</p>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for booking in bookings|slice(0, 6) %}
+                            <div class="list-group-item px-0 d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <div class="fw-semibold">{{ booking.property ? booking.property.title : '-' }}</div>
+                                    <small class="text-muted">{{ booking.user ? booking.user.email : '-' }}</small>
+                                    <div class="muted-small">{{ booking.startDate ? booking.startDate|date('d/m/Y') : '-' }} → {{ booking.endDate ? booking.endDate|date('d/m/Y') : '-' }}</div>
+                                </div>
+                                <span class="badge text-bg-success-subtle text-success">Réservé</span>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4 text-muted">Aucune activité récente.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card section-card">
+        <div class="card-header py-3 px-3 px-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h2 class="section-title h5 mb-1">Réservations</h2>
+                <p class="muted-small mb-0">Vue détaillée des voyages confirmés.</p>
+            </div>
+            <span class="badge text-bg-light text-dark">{{ bookings|length }} réservations</span>
+        </div>
+        <div class="card-body px-0 pt-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Voyageur</th>
+                            <th>Logement</th>
+                            <th>Arrivée</th>
+                            <th>Départ</th>
+                            <th class="text-end pe-4">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td class="ps-4 fw-semibold">#{{ booking.id }}</td>
+                                <td>
+                                    <div class="fw-semibold">{{ booking.user ? booking.user.firstname ~ ' ' ~ booking.user.name : '-' }}</div>
+                                    <small class="text-muted">{{ booking.user ? booking.user.email : '-' }}</small>
+                                </td>
+                                <td>{{ booking.property ? booking.property.title : '-' }}</td>
+                                <td>{{ booking.startDate ? booking.startDate|date('d/m/Y') : '-' }}</td>
+                                <td>{{ booking.endDate ? booking.endDate|date('d/m/Y') : '-' }}</td>
+                                <td class="text-end pe-4"><span class="badge text-bg-success-subtle text-success">Confirmée</span></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Aucune réservation.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

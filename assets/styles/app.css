@@ -1,3 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --ink: #10223a;
+  --muted: #64748b;
+  --line: rgba(16, 34, 58, 0.12);
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-soft: rgba(250, 252, 255, 0.94);
+  --brand: #0ea5a0;
+  --brand-dark: #0b7f7b;
+  --bg-a: #f4fffb;
+  --bg-b: #eef4ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-    background-color: skyblue;
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 5%, rgba(14, 165, 160, 0.18), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.14), transparent 26%),
+    linear-gradient(180deg, var(--bg-a), var(--bg-b));
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.medical-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.medical-topbar {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 1.2rem;
+  background: var(--surface);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.medical-topbar h1 {
+  margin: 0.2rem 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.medical-topbar p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-size: 0.75rem;
+  color: var(--brand-dark);
+  font-weight: 800;
+}
+
+.auth-card,
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+  padding: 1rem;
+}
+
+.panel h2,
+.auth-card h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.8rem;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1rem;
+}
+
+.availability-box {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  padding: 0.75rem;
+}
+
+.availability-box h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.availability-box ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.calendar-cell {
+  min-height: 96px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.45rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.calendar-cell.muted {
+  opacity: 0.45;
+}
+
+.day-number {
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.calendar-cell ul {
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--brand-dark);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.kpi-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-soft);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-card span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.kpi-card strong {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.btn-primary:hover {
+  background: var(--brand-dark);
+  border-color: var(--brand-dark);
+}
+
+@media (max-width: 991px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .medical-topbar {
+    flex-direction: column;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }
